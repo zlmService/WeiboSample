@@ -1,8 +1,6 @@
 package com.demo.zlm.weibosample;
 
 
-import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,24 +21,27 @@ import com.demo.zlm.weibosample.Adatper.WeiBoAdapter;
 import com.demo.zlm.weibosample.api.JsonRequst;
 
 
-public class NewFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> ,AbsListView.OnScrollListener{
+public class PubFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> ,AbsListView.OnScrollListener{
     private ListView listView;
     WeiBoAdapter adapter;
     private int lastindex;
     private int firstindex;
     private RequestQueue queue;
-    private int page=2;
-    public NewFragment() {
+    public PubFragment() {
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View view = inflater.inflate(R.layout.fragment_new, container, false);
-        queue = Volley.newRequestQueue(getContext());
         init(view);
+         queue = Volley.newRequestQueue(getContext());
+
+        String token = getToken();
+        String httpUrl = "https://api.weibo.com/2/statuses/public_timeline.json";
+        String jsonUrl = httpUrl + "?access_token=" + token + "&count=20&page=1";
+        new JsonRequst().getJson(getContext(),queue,jsonUrl);
         return view;
 
 
@@ -48,17 +49,11 @@ public class NewFragment extends Fragment implements LoaderManager.LoaderCallbac
 
     public void init(View view) {
         listView = (ListView) view.findViewById(R.id.token_list);
-//        getContext().getContentResolver().query()
         adapter = new WeiBoAdapter(getContext(), null);
         listView.setAdapter(adapter);
 
         listView.setOnScrollListener(this);
         getLoaderManager().initLoader(0, null, this);
-
-        String token = getToken();
-        String httpUrl = "https://api.weibo.com/2/statuses/friends_timeline.json";
-        String jsonUrl = httpUrl + "?access_token=" + token + "&since_id=0&max_id=0&count=20";
-        new JsonRequst().getJson(getContext(),queue,jsonUrl);
 
     }
 
@@ -85,24 +80,24 @@ public class NewFragment extends Fragment implements LoaderManager.LoaderCallbac
     //下拉刷新
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
+        int page=1;
         if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && adapter.getCount() == lastindex) {
             Toast.makeText(getContext(), "是最后一条了", Toast.LENGTH_SHORT).show();
 
             String token = getToken();
-            String httpUrl = "https://api.weibo.com/2/statuses/friends_timeline.json";
-            String jsonUrl = httpUrl + "?access_token=" + token + "&since_id=0&max_id=0&count=20"+"&page="+page;
+            String httpUrl = "https://api.weibo.com/2/statuses/public_timeline.json";
+            String jsonUrl = httpUrl + "?access_token=" + token + "&count=20&page="+page;
             new JsonRequst().getJson(getContext(),queue,jsonUrl);
             page++;
-            System.out.println(page+"----------------------------");
         }
+
         if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && 0 == firstindex) {
             Toast.makeText(getContext(), "第一条", Toast.LENGTH_SHORT).show();
-
             getContext().getContentResolver().delete(Uri.parse("content://com.zlm.weibo.ContentProvider/weibo"), null, null);
 
             String token = getToken();
-            String httpUrl = "https://api.weibo.com/2/statuses/friends_timeline.json";
-            String jsonUrl = httpUrl + "?access_token=" + token + "&since_id=0&max_id=0&count=20";
+            String httpUrl = "https://api.weibo.com/2/statuses/public_timeline.json";
+            String jsonUrl = httpUrl + "?access_token=" + token + "&count=20&page=1";
             new JsonRequst().getJson(getContext(),queue,jsonUrl);
         }
     }
@@ -121,7 +116,8 @@ public class NewFragment extends Fragment implements LoaderManager.LoaderCallbac
         if (query.moveToFirst()) {
             token = query.getString(query.getColumnIndex("token"));
         }
-      return token;
-
+        return token;
     }
+
+
 }

@@ -2,24 +2,47 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+>
+    <FrameLayout
+        android:id="@+id/frag_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
 
-    <fragment
-        android:id="@+id/new_fragment"
-        android:name="com.demo.zlm.weibosample.NewFragment"
+    </FrameLayout>
+    <LinearLayout
+        android:layout_gravity="bottom"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
-    <fragment
-        android:id="@+id/me_fragment"
-        android:name="com.demo.zlm.weibosample.NewFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
-    <fragment
-        android:id="@+id/set_fragment"
-        android:name="com.demo.zlm.weibosample.NewFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        />
+        android:background="#f74646"
+    android:gravity="center"
+        android:layout_height="30dp">
+        <TextView
+            android:gravity="center"
+            android:id="@+id/tv_1"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="关注人"
+            android:textColor="#b0ffffff"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:gravity="center"
+            android:id="@+id/tv_2"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="公共号"
+            android:textColor="#b0ffffff"
+
+            android:layout_height="wrap_content" />
+        <TextView
+            android:gravity="center"
+            android:id="@+id/tv_3"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="我"
+            android:textColor="#b0ffffff"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
 </LinearLayout>

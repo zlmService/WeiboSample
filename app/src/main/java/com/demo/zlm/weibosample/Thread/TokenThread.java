@@ -87,15 +87,9 @@ public class TokenThread extends Thread {
                 context.getContentResolver().insert(Uri.parse("content://com.zlm.weibo.ContentProvider/token"),values);
             }
 
-
-
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
     public static String postRequest(String url, Map<String, String> headers, Map<String, String> params) {
