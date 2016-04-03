@@ -19,6 +19,8 @@ public class DataContentProvider extends ContentProvider {
     private static final int WEIBO_MUTIPLE_CODE = 1;
     private static final int TOKEN_MUTIPLE_CODE = 3;
     private static final int TOKEN_SINGLE_CODE = 4;
+    private static final int USER_SINGLE_CODE = 5;
+    private static final int USER_MULTIPLE_CODE = 6;
     SQLiteDatabase dbWrite;
     SQLiteDatabase dbRead;
     private static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
@@ -28,6 +30,8 @@ public class DataContentProvider extends ContentProvider {
         uriMatcher.addURI(AUTHROITY, "token/#", TOKEN_SINGLE_CODE);
         uriMatcher.addURI(AUTHROITY, "weibo", WEIBO_MUTIPLE_CODE);
         uriMatcher.addURI(AUTHROITY, "weibo/#", WEIBO_SINGLE_CODE);
+        uriMatcher.addURI(AUTHROITY, "user", USER_MULTIPLE_CODE);
+        uriMatcher.addURI(AUTHROITY, "user/#", USER_SINGLE_CODE);
     }
 
     @Override
@@ -61,10 +65,9 @@ public class DataContentProvider extends ContentProvider {
                 }
                 return query;
             case WEIBO_MUTIPLE_CODE:
-                System.out.println("查询多个");
                 query = dbRead.query(DataMata.WeiBoTable.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
-                if (query!=null){
-                    query.setNotificationUri(getContext().getContentResolver(),uri);
+                if (query != null) {
+                    query.setNotificationUri(getContext().getContentResolver(), uri);
                 }
                 return query;
             case WEIBO_SINGLE_CODE:
@@ -75,6 +78,22 @@ public class DataContentProvider extends ContentProvider {
                 if (query != null) {
                     query.setNotificationUri(getContext().getContentResolver(), uri);
                 }
+                return query;
+            case USER_MULTIPLE_CODE:
+                query = dbRead.query(DataMata.UserTable.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+                if (query != null) {
+                    query.setNotificationUri(getContext().getContentResolver(), uri);
+                }
+                return query;
+            case USER_SINGLE_CODE:
+                long uid = ContentUris.parseId(uri);
+                selection = DataMata.TokenTable._ID + "=?";
+                selectionArgs = new String[]{String.valueOf(uid)};
+                query = dbRead.query(DataMata.UserTable.TABLE_NAME, projection, selection, selectionArgs, null, null, sortOrder);
+                if (query != null) {
+                    query.setNotificationUri(getContext().getContentResolver(), uri);
+                }
+                return query;
         }
         return null;
     }
@@ -91,14 +110,21 @@ public class DataContentProvider extends ContentProvider {
         long insert;
         switch (uriMatcher.match(uri)) {
             case TOKEN_MUTIPLE_CODE:
-                insert= dbWrite.insert(DataMata.TokenTable.TABLE_NAME, null, values);
+                insert = dbWrite.insert(DataMata.TokenTable.TABLE_NAME, null, values);
                 if (insert != -1) {
                     uri = ContentUris.withAppendedId(uri, insert);
                     getContext().getContentResolver().notifyChange(uri, null);
                 }
                 return uri;
             case WEIBO_MUTIPLE_CODE:
-                insert= dbWrite.insert(DataMata.WeiBoTable.TABLE_NAME, null, values);
+                insert = dbWrite.insert(DataMata.WeiBoTable.TABLE_NAME, null, values);
+                if (insert != -1) {
+                    uri = ContentUris.withAppendedId(uri, insert);
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+                return uri;
+            case USER_MULTIPLE_CODE:
+                insert = dbWrite.insert(DataMata.UserTable.TABLE_NAME, null, values);
                 if (insert != -1) {
                     uri = ContentUris.withAppendedId(uri, insert);
                     getContext().getContentResolver().notifyChange(uri, null);
@@ -120,6 +146,12 @@ public class DataContentProvider extends ContentProvider {
                 return delete;
             case WEIBO_MUTIPLE_CODE:
                 delete = dbWrite.delete(DataMata.WeiBoTable.TABLE_NAME, selection, selectionArgs);
+                if (delete > 0) {
+                    getContext().getContentResolver().notifyChange(uri, null);
+                }
+                return delete;
+            case USER_MULTIPLE_CODE:
+                delete = dbWrite.delete(DataMata.UserTable.TABLE_NAME, selection, selectionArgs);
                 if (delete > 0) {
                     getContext().getContentResolver().notifyChange(uri, null);
                 }

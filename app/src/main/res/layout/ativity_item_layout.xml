@@ -5,11 +5,36 @@
     android:orientation="vertical"
 >
     <FrameLayout
+        android:background="#5364c1ec"
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/userImg_iv"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_centerVertical="true"/>
+        <TextView
+            android:layout_marginLeft="55dp"
+            android:id="@+id/userName_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:gravity="center_vertical"/>
+
+        <TextView
+            android:gravity="right"
+            android:id="@+id/userLocation_tv"
+            android:layout_marginRight="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center_vertical" />
+    </FrameLayout>
+    <FrameLayout
         android:id="@+id/frag_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
-
     </FrameLayout>
     <LinearLayout
         android:layout_gravity="bottom"

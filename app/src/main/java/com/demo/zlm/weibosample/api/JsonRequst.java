@@ -43,7 +43,7 @@ public class JsonRequst {
                     String location = user.getLocation();
                     String name = user.getName();
                     String profile_image_url = user.getProfile_image_url();
-                    System.out.println("created_at=" + created_at + "source=" + source + "text=" + text + "location=" + location + "name=" + name + "image_url=" + profile_image_url);
+                    System.out.println("-----------------微博："+"created_at=" + created_at + "source=" + source + "text=" + text + "location=" + location + "name=" + name + "image_url=" + profile_image_url);
                     //往数据库中添加数据
                     ContentValues values = new ContentValues();
                     values.put(DataMata.WeiBoTable.CREATED_AT, created_at);
@@ -58,7 +58,7 @@ public class JsonRequst {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println("Volley 请求错误");
+                System.out.println("Volley 请求微博错误");
             }
         });
         queue.add(request);
@@ -68,5 +68,32 @@ public class JsonRequst {
         //传入jsonUrl 得到Json数据
          jsonClick(context, jsonUrl, queue);
 
+    }
+    public void getUser(final Context context, RequestQueue queue, String userUrl){
+        StringRequest request = new StringRequest(Request.Method.GET, userUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println(response);
+                Gson gson = new Gson();
+                User user = gson.fromJson(response, User.class);
+
+                    String location = user.getLocation();
+                    String name = user.getName();
+                    String profile_image_url = user.getProfile_image_url();
+                    System.out.println("--------------------用户："+"location=" + location + "name=" + name + "image_url=" + profile_image_url);
+                    //往数据库中添加数据
+                    ContentValues values = new ContentValues();
+                    values.put(DataMata.WeiBoTable.LOCATION, location);
+                    values.put(DataMata.WeiBoTable.NAME, name);
+                    values.put(DataMata.WeiBoTable.IMAGE_URL, profile_image_url);
+                context.getContentResolver().insert(Uri.parse("content://com.zlm.weibo.ContentProvider/user"), values);
+                }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("Volley 请求用户错误");
+            }
+        });
+        queue.add(request);
     }
 }

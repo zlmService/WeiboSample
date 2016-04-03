@@ -21,13 +21,13 @@ import com.demo.zlm.weibosample.Adatper.WeiBoAdapter;
 import com.demo.zlm.weibosample.api.JsonRequst;
 
 
-public class PubFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> ,AbsListView.OnScrollListener{
+public class MeFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> ,AbsListView.OnScrollListener{
     private ListView listView;
     WeiBoAdapter adapter;
     private int lastindex;
     private int firstindex;
     private RequestQueue queue;
-    public PubFragment() {
+    public MeFragment() {
 
     }
 
@@ -39,8 +39,8 @@ public class PubFragment extends Fragment implements LoaderManager.LoaderCallbac
          queue = Volley.newRequestQueue(getContext());
 
         String token = getToken();
-        String httpUrl = "https://api.weibo.com/2/statuses/public_timeline.json";
-        String jsonUrl = httpUrl + "?access_token=" + token + "&count=20&page=1";
+        String httpUrl = "https://api.weibo.com/2/statuses/user_timeline.json";
+        String jsonUrl = httpUrl + "?access_token=" + token;
         new JsonRequst().getJson(getContext(),queue,jsonUrl);
         return view;
 
@@ -85,8 +85,8 @@ public class PubFragment extends Fragment implements LoaderManager.LoaderCallbac
             Toast.makeText(getContext(), "是最后一条了", Toast.LENGTH_SHORT).show();
 
             String token = getToken();
-            String httpUrl = "https://api.weibo.com/2/statuses/public_timeline.json";
-            String jsonUrl = httpUrl + "?access_token=" + token + "&count=20&page="+page;
+            String httpUrl = "https://api.weibo.com/2/statuses/user_timeline.json";
+            String jsonUrl = httpUrl + "?access_token=" + token;
             new JsonRequst().getJson(getContext(),queue,jsonUrl);
             page++;
         }
@@ -95,10 +95,9 @@ public class PubFragment extends Fragment implements LoaderManager.LoaderCallbac
             Toast.makeText(getContext(), "第一条", Toast.LENGTH_SHORT).show();
 
             String token = getToken();
-            String httpUrl = "https://api.weibo.com/2/statuses/public_timeline.json";
-            String jsonUrl = httpUrl + "?access_token=" + token + "&count=20&page=1";
+            String httpUrl = "https://api.weibo.com/2/statuses/user_timeline.json";
+            String jsonUrl = httpUrl + "?access_token=" + token;
             new JsonRequst().getJson(getContext(),queue,jsonUrl);
-
             getContext().getContentResolver().delete(Uri.parse("content://com.zlm.weibo.ContentProvider/weibo"), null, null);
 
         }

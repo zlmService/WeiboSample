@@ -10,6 +10,7 @@ public class DataMata  {
     public static abstract  class TokenTable implements BaseColumns{
         public static final String TABLE_NAME="token_tb";
         public static final String TOKEN="token";
+        public static final String UID="uid";
     }
     public static abstract  class WeiBoTable implements  BaseColumns{
         public static final String TABLE_NAME="weibo_tb";
@@ -20,6 +21,15 @@ public class DataMata  {
         public static final String  LOCATION="LOCATION";
         public static final String  NAME="NAME";
         public static final String IMAGE_URL="IMAGE_URL";
+
+    }
+
+    public static abstract  class UserTable implements  BaseColumns{
+        public static final String TABLE_NAME="user_tb";
+        //用户信息
+        public static final String  LOCATION="location";
+        public static final String  NAME="name";
+        public static final String IMAGE_URL="image_url";
 
     }
 //    public static abstract class

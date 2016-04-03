@@ -7,7 +7,7 @@ public class Token {
     private String access_token;
     private String remind_in;
     private String expires_in;
-    private String uid;
+    private String  uid;
 
     public String getRemind_in() {
         return remind_in;

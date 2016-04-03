@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -60,6 +61,8 @@ public class NewFragment extends Fragment implements LoaderManager.LoaderCallbac
         String jsonUrl = httpUrl + "?access_token=" + token + "&since_id=0&max_id=0&count=20";
         new JsonRequst().getJson(getContext(),queue,jsonUrl);
 
+
+
     }
 
     //CursorLoader
@@ -97,13 +100,11 @@ public class NewFragment extends Fragment implements LoaderManager.LoaderCallbac
         }
         if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && 0 == firstindex) {
             Toast.makeText(getContext(), "第一条", Toast.LENGTH_SHORT).show();
-
-            getContext().getContentResolver().delete(Uri.parse("content://com.zlm.weibo.ContentProvider/weibo"), null, null);
-
             String token = getToken();
             String httpUrl = "https://api.weibo.com/2/statuses/friends_timeline.json";
             String jsonUrl = httpUrl + "?access_token=" + token + "&since_id=0&max_id=0&count=20";
             new JsonRequst().getJson(getContext(),queue,jsonUrl);
+            getContext().getContentResolver().delete(Uri.parse("content://com.zlm.weibo.ContentProvider/weibo"), null, null);
         }
     }
 

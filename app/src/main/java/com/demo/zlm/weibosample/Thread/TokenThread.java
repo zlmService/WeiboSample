@@ -2,6 +2,7 @@ package com.demo.zlm.weibosample.Thread;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 
@@ -67,23 +68,28 @@ public class TokenThread extends Thread {
             Token token = gson.fromJson(sb.toString(), Token.class);
             System.out.println("请求的token"+token.toString());
             String token_code = token.getToken();
+            String uid= token.getUid();
             //先判断数据库里面是否已经存在;
             Cursor query = context.getContentResolver().query(Uri.parse("content://com.zlm.weibo.ContentProvider/token"), null, null, null, null);
+            System.out.println("querytoken================="+query.toString());
             if(query.moveToFirst()){
                 String code_token= query.getString(query.getColumnIndex("token"));
                 if (code_token.equals(token_code)){
                     System.out.println("相等，不存储了");
-                    return;
                 }
                 else{
+                    context.getContentResolver().delete(Uri.parse("content://com.zlm.weibo.ContentProvider/token"),null,null);
                     ContentValues values=new ContentValues();
                     values.put("token",token_code);
+                    values.put("uid",uid);
                     context.getContentResolver().insert(Uri.parse("content://com.zlm.weibo.ContentProvider/token"),values);
+
                 }
             }
-            else{
+            else if(!query.moveToFirst()){
                 ContentValues values=new ContentValues();
                 values.put("token",token_code);
+                values.put("uid",uid);
                 context.getContentResolver().insert(Uri.parse("content://com.zlm.weibo.ContentProvider/token"),values);
             }
 
@@ -91,68 +97,6 @@ public class TokenThread extends Thread {
             e.printStackTrace();
         }
     }
-
-    public static String postRequest(String url, Map<String, String> headers, Map<String, String> params) {
-        try {
-            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-            connection.setConnectTimeout(5000);
-            connection.setReadTimeout(5000);
-            connection.setDoOutput(true);
-            connection.setDoInput(true);
-            connection.setRequestMethod("POST");
-            connection.connect();
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-            if (headers != null) {
-                Set<String> keys = headers.keySet();
-                Iterator<String> iterator = keys.iterator();
-                while (iterator.hasNext()) {
-                    String key = iterator.next();
-                    String value = params.get(key);
-                    // 添加请求头
-                    connection.addRequestProperty(key, value);
-                }
-            }
-
-            if (params != null) {
-                Set<String> keys = params.keySet();
-                Iterator<String> iterator = keys.iterator();
-                while (iterator.hasNext()) {
-                    String key = iterator.next();
-                    String value = params.get(key);
-                    if (baos.size() > 0) {
-                        baos.write('&');
-                    }
-                    baos.write(URLEncoder.encode(key, "UTF-8").getBytes("UTF-8"));
-                    baos.write('=');
-                    baos.write(URLEncoder.encode(value, "UTF-8").getBytes("UTF-8"));
-                }
-            }
-            System.out.println(new String(baos.toByteArray()));
-            OutputStream os = connection.getOutputStream();
-            os.write(baos.toByteArray());
-            int status = connection.getResponseCode();
-            InputStream is;
-            if (status >= 400) {
-                is = connection.getErrorStream();
-            } else {
-                is = connection.getInputStream();
-            }
-
-            InputStreamReader isr = new InputStreamReader(is);
-            BufferedReader bufr = new BufferedReader(isr);
-            String line;
-            StringBuilder sb = new StringBuilder();
-            while ((line = bufr.readLine()) != null) {
-                sb.append(line);
-            }
-            return sb.toString();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
 
 }
 
