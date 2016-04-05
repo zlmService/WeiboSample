@@ -1,0 +1,46 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg">
+
+    <Button
+        android:id="@+id/no_btn"
+        android:layout_width="60dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:text="取消" />
+
+    <Button
+        android:id="@+id/yes_btn"
+        android:layout_width="60dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:background="#cbf5433d"
+        android:text="发布" />
+
+    <ImageView
+        android:id="@+id/photo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:background="#ec0a0a"
+        android:padding="3dp"
+        android:src="@drawable/default_bg" />
+
+    <EditText
+        android:id="@+id/text_send_ed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/photo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/word"
+        android:hint="分享新鲜事..."
+        android:maxLength="140" />
+
+</RelativeLayout>

@@ -7,10 +7,18 @@ import java.util.List;
  */
 public class Statuses {
     // 时间  内容   来自哪里 发送人信息
+    long id;
     String created_at;
     String text;
     String source;
     User user;
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getCreated_at() {
         return created_at;
@@ -47,7 +55,8 @@ public class Statuses {
     @Override
     public String toString() {
         return "Statuses{" +
-                "created_at='" + created_at + '\'' +
+                "id=" + id +
+                ", created_at='" + created_at + '\'' +
                 ", text='" + text + '\'' +
                 ", source='" + source + '\'' +
                 ", user=" + user +

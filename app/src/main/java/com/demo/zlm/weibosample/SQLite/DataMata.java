@@ -21,6 +21,7 @@ public class DataMata  {
         public static final String  LOCATION="LOCATION";
         public static final String  NAME="NAME";
         public static final String IMAGE_URL="IMAGE_URL";
+        public static final String WEIBO_ID="WEIBO_ID";
 
     }
 

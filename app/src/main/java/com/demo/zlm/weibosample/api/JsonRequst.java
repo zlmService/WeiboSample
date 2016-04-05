@@ -5,18 +5,24 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.demo.zlm.weibosample.SQLite.DataMata;
 import com.demo.zlm.weibosample.User.Statuses;
 import com.demo.zlm.weibosample.User.User;
 import com.demo.zlm.weibosample.User.WeiBo;
 import com.google.gson.Gson;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import retrofit2.http.POST;
 
 /**
  * Created by malinkang on 2016/4/1.
@@ -35,7 +41,9 @@ public class JsonRequst {
                 WeiBo weiBo = gson.fromJson(response, WeiBo.class);
                 List<Statuses> statuses = weiBo.getStatuses();
                 for (int i = 0; i < statuses.size(); i++) {
+
                     Statuses statuses1 = statuses.get(i);
+                    long weibo_id=statuses1.getId();
                     String created_at = statuses1.getCreated_at();
                     String source = statuses1.getSource();
                     String text = statuses1.getText();
@@ -52,6 +60,7 @@ public class JsonRequst {
                     values.put(DataMata.WeiBoTable.LOCATION, location);
                     values.put(DataMata.WeiBoTable.NAME, name);
                     values.put(DataMata.WeiBoTable.IMAGE_URL, profile_image_url);
+                    values.put(DataMata.WeiBoTable.WEIBO_ID, weibo_id);
                     context.getContentResolver().insert(Uri.parse("content://com.zlm.weibo.ContentProvider/weibo"), values);
                 }
             }
@@ -96,4 +105,6 @@ public class JsonRequst {
         });
         queue.add(request);
     }
+
+
 }

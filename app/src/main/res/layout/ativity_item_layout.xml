@@ -15,6 +15,7 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_centerVertical="true"/>
+
         <TextView
             android:layout_marginLeft="55dp"
             android:id="@+id/userName_tv"

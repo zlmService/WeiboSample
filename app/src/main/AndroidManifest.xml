@@ -25,6 +25,7 @@
         <provider
             android:authorities="com.zlm.weibo.ContentProvider"
             android:name=".SQLite.DataContentProvider"/>
+        <activity android:name=".SendWeiBoActivity"/>
     </application>
 
 </manifest>

@@ -56,6 +56,8 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
         tv2.setOnClickListener(this);
         tv3.setOnClickListener(this);
         tv_userName.setOnClickListener(this);
+//        tv_userName.setOnLongClickListener(this);
+        userImg_iv.setOnClickListener(this);
         getSupportFragmentManager().beginTransaction().
                 add(R.id.frag_layout, new NewFragment())
                 .commit();
@@ -121,6 +123,11 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
                 intent.putExtra("foreclogin",foreclogin);
                 startActivity(intent);
                 break;
+            case R.id.userImg_iv:
+                Intent intent1=new Intent(this,SendWeiBoActivity.class);
+                startActivity(intent1);
+                break;
+
         }
     }
     public void toggleFragment(Fragment fragment){
@@ -166,7 +173,12 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
+//    @Override
+//    public boolean onLongClick(View v) {
+//        Intent intent=new Intent(this,SendWeiBoActivity.class);
+//        startActivity(intent);
+//        return true;
+//    }
 }
 
 
