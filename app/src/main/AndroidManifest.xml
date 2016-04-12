@@ -2,15 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.demo.zlm.weibosample">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".Application"
         android:allowBackup="true"
         android:icon="@drawable/gou2"
         android:label="@string/app_name"
-        android:theme="@style/Theme.AppCompat.NoActionBar"
-        android:supportsRtl="true">
+        android:supportsRtl="true"
+        android:theme="@style/Theme.AppCompat.NoActionBar">
         <activity android:name=".MainActivity">
 
         </activity>
@@ -20,12 +21,25 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-     </activity>
-        <activity android:name=".ListActivity"/>
+        </activity>
+        <activity android:name=".ListActivity" />
+
         <provider
-            android:authorities="com.zlm.weibo.ContentProvider"
-            android:name=".SQLite.DataContentProvider"/>
-        <activity android:name=".SendWeiBoActivity"/>
+            android:name="com.activeandroid.content.ContentProvider"
+            android:authorities="com.demo.zlm.weibosample"
+            android:exported="false" />
+
+        <activity android:name=".SendWeiBoActivity" />
+
+        <meta-data
+            android:name="AA_DB_NAME"
+            android:value="sina.db" />
+        <meta-data
+            android:name="AA_DB_VERSION"
+            android:value="2" />
+        <meta-data
+            android:name="AA_MODEL"
+            android:value="com.demo.zlm.weibosample.model.Token,com.demo.zlm.weibosample.model.User,com.demo.zlm.weibosample.model.Status,com.demo.zlm.weibosample.model.WeiBoUser" />
     </application>
 
 </manifest>
